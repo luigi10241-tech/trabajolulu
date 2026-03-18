@@ -1,0 +1,66 @@
+public class ConversorTermico extends ConversorGenerico {
+ 
+    private String tipoConversao;
+    private double temperaturaEmKelvin;
+    private boolean origemCelsius;
+    private String nomeConversao;
+ 
+    public static final String[] OPCOES = {
+        "Celsius -> Fahrenheit",
+        "Celsius -> Kelvin",
+        "Fahrenheit -> Celsius",
+        "Kelvin -> Fahrenheit"
+    };
+ 
+    public ConversorTermico() {
+        super();
+    }
+ 
+    public ConversorTermico(double valorEntrada, String unidadeOrigem, String unidadeDestino, String usuario, String tipoConversao) {
+        super(valorEntrada, unidadeOrigem, unidadeDestino, usuario);
+        this.tipoConversao = tipoConversao;
+        this.origemCelsius = unidadeOrigem.equalsIgnoreCase("Celsius");
+        this.nomeConversao = unidadeOrigem + " -> " + unidadeDestino;
+    }
+ 
+    @Override
+    public void calcularConversao() {
+        double entrada = getValorEntrada();
+        double resultado = 0;
+ 
+        if (tipoConversao.equals("1")) {
+            resultado = (entrada * 9.0 / 5.0) + 32;
+            temperaturaEmKelvin = entrada + 273.15;
+        } else if (tipoConversao.equals("2")) {
+            resultado = entrada + 273.15;
+            temperaturaEmKelvin = resultado;
+        } else if (tipoConversao.equals("3")) {
+            resultado = (entrada - 32) * 5.0 / 9.0;
+            temperaturaEmKelvin = resultado + 273.15;
+        } else if (tipoConversao.equals("4")) {
+            double kelvin = entrada < 0 ? 0 : entrada;
+            resultado = (kelvin - 273.15) * 9.0 / 5.0 + 32;
+            temperaturaEmKelvin = kelvin;
+        }
+ 
+        setValorSaida(resultado);
+    }
+ 
+    @Override
+    public String exibirResumo() {
+        return String.format("[ID: %d] Termico | %s | %.2f -> %.2f | Kelvin: %.2f | %s | %s",
+                getId(), nomeConversao, getValorEntrada(), getValorSaida(),
+                temperaturaEmKelvin, getDataHora(), getUsuario());
+    }
+ 
+    public String getTipoConversao() { return tipoConversao; }
+    public double getTemperaturaEmKelvin() { return temperaturaEmKelvin; }
+    public boolean isOrigemCelsius() { return origemCelsius; }
+    public String getNomeConversao() { return nomeConversao; }
+ 
+    public void setTipoConversao(String tipoConversao) { this.tipoConversao = tipoConversao; }
+    public void setTemperaturaEmKelvin(double temperaturaEmKelvin) { this.temperaturaEmKelvin = temperaturaEmKelvin; }
+    public void setOrigemCelsius(boolean origemCelsius) { this.origemCelsius = origemCelsius; }
+    public void setNomeConversao(String nomeConversao) { this.nomeConversao = nomeConversao; }
+}
+ 
